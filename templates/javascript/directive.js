@@ -1,8 +1,9 @@
 'use strict';
 
 /**
+ * @memberof <%= scriptAppName %>
  * @ngdoc directive
- * @name <%= scriptAppName %>.directive:<%= cameledName %>
+ * @name <%= cameledName %>
  * @description
  * # <%= cameledName %>
  */

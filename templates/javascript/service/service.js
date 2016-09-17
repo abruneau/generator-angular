@@ -1,8 +1,9 @@
 'use strict';
 
 /**
+ * @memberof <%= scriptAppName %>
  * @ngdoc service
- * @name <%= scriptAppName %>.<%= cameledName %>
+ * @name <%= cameledName %>
  * @description
  * # <%= cameledName %>
  * Service in the <%= scriptAppName %>.

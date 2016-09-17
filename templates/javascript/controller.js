@@ -1,8 +1,9 @@
 'use strict';
 
 /**
- * @ngdoc function
- * @name <%= scriptAppName %>.controller:<%= classedName %>Ctrl
+ * @memberof <%= scriptAppName %>
+ * @ngdoc controller
+ * @name <%= classedName %>Ctrl
  * @description
  * # <%= classedName %>Ctrl
  * Controller of the <%= scriptAppName %>

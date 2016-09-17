@@ -1,8 +1,9 @@
 'use strict';
 
 /**
+ * @memberof <%= scriptAppName %>
  * @ngdoc filter
- * @name <%= scriptAppName %>.filter:<%= cameledName %>
+ * @name <%= cameledName %>
  * @function
  * @description
  * # <%= cameledName %>

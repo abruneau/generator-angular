@@ -1,8 +1,9 @@
 'use strict';
 
 /**
- * @ngdoc function
- * @name <%= scriptAppName %>.decorator:<%= classedName %>
+ * @memberof <%= scriptAppName %>
+ * @ngdoc decorator
+ * @name <%= classedName %>
  * @description
  * # <%= classedName %>
  * Decorator of the <%= scriptAppName %>
