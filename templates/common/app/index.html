@@ -75,9 +75,21 @@
        ga('send', 'pageview');
     </script>
 
+	<script>
+      if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
     <!-- endbuild -->
+
+	<script>
+      if (window.module)
+        module = window.module;
+    </script>
   </body>
 </html>

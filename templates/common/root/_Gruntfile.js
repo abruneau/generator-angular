@@ -12,6 +12,12 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  require('load-grunt-tasks')(grunt);
+  grunt.loadNpmTasks('grunt-install-dependencies');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+
+  grunt.loadNpmTasks('grunt-jsdoc');
+
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
@@ -87,6 +93,19 @@ module.exports = function (grunt) {
         ]
       }
     },
+
+	jsdoc: {
+	  dist: {
+		src: ["app/scripts/**/*.js"],
+		options: {
+		  destination: 'doc',
+		  configure: 'node_modules/angular-jsdoc/common/conf.json',
+		  template: 'node_modules/angular-jsdoc/angular-template',
+		  tutorial: 'tutorials',
+		  readme: './README.md'
+		}
+	  }
+	},
 
     // The actual grunt server settings
     connect: {
@@ -225,6 +244,9 @@ module.exports = function (grunt) {
         src: ['<%%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
       },
+	  dev: {
+		src: ['<%%= yeoman.app %>/index.html']
+	  },
       test: {
         devDependencies: true,
         src: '<%%= karma.unit.configFile %>',
@@ -505,9 +527,15 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '*.html',
             'images/{,*/}*.{webp}',
-            'styles/fonts/{,*/}*.*'
+            'styles/fonts/{,*/}*.*',
+			'index.js'
           ]
         }, {
+		  expand: true,
+		  cwd: '',
+		  src: 'package.json',
+		  dest: '<%%= yeoman.dist %>'
+	  	}, {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%%= yeoman.dist %>/images',
@@ -531,7 +559,8 @@ module.exports = function (grunt) {
         cwd: '<%%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
-      }
+	  },
+	  dev: {}
     },
 
     // Run some tasks in parallel to speed up the build process
@@ -558,6 +587,35 @@ module.exports = function (grunt) {
       ]
     },
 
+	shell: {
+	  options: {
+		stderr: false
+	  },
+	  target: {
+		command: 'electron .'
+	  }
+	},
+
+	'install-dependencies': {
+	  options: {
+		cwd: '<%%= yeoman.dist %>'
+	  }
+	},
+
+	electron: {
+	  macosBuild: {
+		options: {
+		  name: 'cmp',
+		  dir: 'dist',
+		  out: 'exec',
+		  version: '1.2.8',
+		  platform: 'darwin',
+		  arch: 'x64',
+		  overwrite: 'true'
+		}
+	  }
+	},
+
     // Test settings
     karma: {
       unit: {
@@ -570,6 +628,7 @@ module.exports = function (grunt) {
     }
   });
 
+grunt.loadNpmTasks('grunt-install-dependencies');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -577,13 +636,14 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+	  'jsdoc',
       'clean:server',
       'wiredep',<% if (typescript) { %>
       'tsd:refresh',<% } %>
       'concurrent:server',
       'postcss:server',
-      'connect:livereload',
-      'watch'
+	  'copy:dev',
+	  'shell'
     ]);
   });
 
@@ -604,21 +664,24 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'wiredep',<% if (typescript) { %>
+    'wiredep:app',<% if (typescript) { %>
     'tsd:refresh',<% } %>
     'useminPrepare',
     'concurrent:dist',
-    'postcss',
-    'ngtemplates',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
+	'postcss',
+	'ngtemplates',
+	'concat',
+	'ngAnnotate',
+	'copy:dist',
+	'cdnify',
+	'cssmin',
+	'uglify',
+	'filerev',
+	'usemin',
+	'htmlmin',
+	'install-dependencies',
+	'electron',
+	'wiredep'
   ]);
 
   grunt.registerTask('default', [

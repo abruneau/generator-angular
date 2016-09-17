@@ -31,6 +31,7 @@ Generator.prototype.setupEnv = function setupEnv() {
   }.bind(this);
 
   copy('404.html');
+  copy('index.js');
   copy('favicon.ico');
   copy('robots.txt');
   copy('views/main.html');
